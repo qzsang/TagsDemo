@@ -16,7 +16,7 @@
             android:id="@+id/sltl_tags"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:hint="我是一个下"
+            app:hint="我是没有任何标签时候的提示"
             />
         <TextView
             android:layout_width="wrap_content"
