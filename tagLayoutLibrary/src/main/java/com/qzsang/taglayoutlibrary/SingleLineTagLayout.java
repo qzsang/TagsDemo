@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -34,6 +35,7 @@ public class SingleLineTagLayout extends ViewGroup {
 
     private OnCreatChildView onCreatChildView;
 
+    private LayoutInflater mFactory;
     public SingleLineTagLayout(Context context) {
         super(context);
         init (context, null);
@@ -48,6 +50,7 @@ public class SingleLineTagLayout extends ViewGroup {
 
     private void init (Context context, AttributeSet attrs) {
 
+        mFactory = LayoutInflater.from(context);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SingleLineTagLayout, 0, 0);
         String tempStrNote = a.getString(R.styleable.SingleLineTagLayout_hint);
@@ -72,11 +75,13 @@ public class SingleLineTagLayout extends ViewGroup {
         } else {
             //增加tag
             for (int i = 0; i < tags.size(); i++) {
-                addView(onCreatChildView.onCreatTagView(tags.get(i).toString()));
+                View view = onCreatChildView.onCreatTagView(tags.get(i).toString(), mFactory);
+                addView(view);
             }
 
             //增加tag 后面的...
-            addView(onCreatChildView.onCreatAppendView());
+            View view = onCreatChildView.onCreatAppendView(mFactory);
+            addView(view);
 
             showItemCount = tags.size() + 1;
         }
@@ -118,7 +123,10 @@ public class SingleLineTagLayout extends ViewGroup {
         return new MarginLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 
-
+    @Override
+    protected LayoutParams generateLayoutParams(LayoutParams p) {
+        return new MarginLayoutParams(p);
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -223,6 +231,7 @@ public class SingleLineTagLayout extends ViewGroup {
         int cWidth = 0;
         int cHeight = 0;
         MarginLayoutParams lp;
+        int measuredHeight = getMeasuredHeight();
 
         int startL = 0;
 
@@ -251,7 +260,13 @@ public class SingleLineTagLayout extends ViewGroup {
             int ct = lp.topMargin;
             int cb = cHeight + lp.bottomMargin;
 
-            childView.layout(cl + startL,ct,cr + startL,cb);
+            int cRealHeight = cb - ct;
+            int startHeight = 0;
+
+            if (cRealHeight < measuredHeight) {
+                startHeight = (measuredHeight - cRealHeight) / 2;
+            }
+            childView.layout(cl + startL,ct + startHeight,cr + startL,cb + startHeight);
             startL += (cr + cl);
         }
 
@@ -259,8 +274,8 @@ public class SingleLineTagLayout extends ViewGroup {
 
 
     public interface OnCreatChildView {
-        View onCreatTagView (String str);
-        View onCreatAppendView ();
+        View onCreatTagView (String str, LayoutInflater factory);
+        View onCreatAppendView (LayoutInflater factory);
     }
 
 }

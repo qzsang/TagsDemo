@@ -2,6 +2,7 @@ package com.qzsang.tagsdemo;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -22,28 +23,35 @@ public class MainActivity extends AppCompatActivity {
 
 
             @Override
-            public View onCreatTagView(String str) {
-                View view = View.inflate(MainActivity.this, R.layout.item_tag, null);
+            public View onCreatTagView(String str, LayoutInflater factory) {
+               View view = factory.inflate(R.layout.item_tag, null);
                 TextView textView = (TextView) view.findViewById(R.id.tv_tag);
                 textView.setText(str + "");
                 return view;
             }
 
             @Override
-            public View onCreatAppendView() {
-                View view = View.inflate(MainActivity.this, R.layout.item_tag, null);
+            public View onCreatAppendView(LayoutInflater factory) {
+                View view = factory.inflate(R.layout.item_tag, null);
                 TextView textView = (TextView) view.findViewById(R.id.tv_tag);
-                textView.setText("....");
+                textView.setText("----");
                 return view;
             }
         });
 
-        List<String> tags = new ArrayList<>();
-        tags.add("我是一个tag;");
-        tags.add("我是一个tag;");
-        tags.add("我是一个tag;");
-        tags.add("我是一个tag;");
-        sltl_tags.setTags(tags);
+
+        findViewById(R.id.btn_click).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                List<String> list = new ArrayList<String>();
+                list.add("sdfasdfasdf");
+                list.add("sdfasdfasdf");
+                list.add("sdfasdfasdf");
+                sltl_tags.setTags(list);
+            }
+        });
+
 
     }
 }
