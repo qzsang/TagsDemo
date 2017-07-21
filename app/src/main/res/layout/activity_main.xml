@@ -23,9 +23,11 @@
             android:layout_height="wrap_content"
             android:text="-"/>
 
-    </LinearLayout>
-
-
+   </LinearLayout>
+    <com.qzsang.taglayoutlibrary.TagLayout
+        android:id="@+id/tl_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
     <Button
         android:id="@+id/btn_click"
         android:layout_width="wrap_content"

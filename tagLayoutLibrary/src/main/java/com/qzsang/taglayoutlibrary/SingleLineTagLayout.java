@@ -35,7 +35,6 @@ public class SingleLineTagLayout extends ViewGroup {
 
     private OnCreatChildView onCreatChildView;
 
-    private LayoutInflater mFactory;
     public SingleLineTagLayout(Context context) {
         super(context);
         init (context, null);
@@ -50,7 +49,6 @@ public class SingleLineTagLayout extends ViewGroup {
 
     private void init (Context context, AttributeSet attrs) {
 
-        mFactory = LayoutInflater.from(context);
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SingleLineTagLayout, 0, 0);
         String tempStrNote = a.getString(R.styleable.SingleLineTagLayout_hint);
@@ -75,12 +73,12 @@ public class SingleLineTagLayout extends ViewGroup {
         } else {
             //增加tag
             for (int i = 0; i < tags.size(); i++) {
-                View view = onCreatChildView.onCreatTagView(tags.get(i).toString(), mFactory);
+                View view = onCreatChildView.onCreatTagView(tags.get(i).toString());
                 addView(view);
             }
 
             //增加tag 后面的...
-            View view = onCreatChildView.onCreatAppendView(mFactory);
+            View view = onCreatChildView.onCreatAppendView();
             addView(view);
 
             showItemCount = tags.size() + 1;
@@ -272,10 +270,10 @@ public class SingleLineTagLayout extends ViewGroup {
 
     }
 
-
     public interface OnCreatChildView {
-        View onCreatTagView (String str, LayoutInflater factory);
-        View onCreatAppendView (LayoutInflater factory);
+        View onCreatTagView (String str);
+        View onCreatAppendView ();
     }
+
 
 }
