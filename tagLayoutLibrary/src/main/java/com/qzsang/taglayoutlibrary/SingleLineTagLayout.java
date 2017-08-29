@@ -5,7 +5,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.view.LayoutInflater;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -23,7 +23,10 @@ import java.util.List;
 
 public class SingleLineTagLayout extends ViewGroup {
 
-    private String strNote = "这里还没有任何标签哦";//没有标签的提示内容
+    private String hint = "这里还没有任何标签哦";//没有标签的提示内容
+    private float hintSize = 0;//没有标签的提示内容 字体大小
+    private int hintPaddingLeft = 0;
+    private int hintColor = 0;
 
     private int showItemCount = 0;//能显示的item数量
 
@@ -51,11 +54,15 @@ public class SingleLineTagLayout extends ViewGroup {
 
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SingleLineTagLayout, 0, 0);
-        String tempStrNote = a.getString(R.styleable.SingleLineTagLayout_hint);
+        String tempStrNote = a.getString(R.styleable.SingleLineTagLayout_SingleLineTagLayoutHint);
+        hintPaddingLeft = a.getDimensionPixelSize(R.styleable.SingleLineTagLayout_SingleLineTagLayoutPaddingLeft, hintPaddingLeft);
+        hintSize = a.getDimension(R.styleable.SingleLineTagLayout_SingleLineTagLayoutSize, hintSize);
+        hintColor = a.getColor(R.styleable.SingleLineTagLayout_SingleLineTagLayoutColor, hintColor);
         a.recycle();
 
+
         if (!TextUtils.isEmpty(tempStrNote)) {
-            strNote = tempStrNote;
+            hint = tempStrNote;
         }
         initView();
 
@@ -67,19 +74,27 @@ public class SingleLineTagLayout extends ViewGroup {
         //新增提示
         if (getTagCount() == 0 || onCreatChildView == null) {
             TextView textView = new TextView(getContext());
-            textView.setText(strNote);
+            textView.setText(hint);
+            if (hintPaddingLeft != 0) {
+                textView.setPadding(hintPaddingLeft,0,0,0);
+            }
+            if (hintSize != 0) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,hintSize);
+            }
+            if (hintColor != 0) {
+                textView.setTextColor(hintColor);
+            }
+
             addView(textView);
             showItemCount = 1;
         } else {
             //增加tag
             for (int i = 0; i < tags.size(); i++) {
-                View view = onCreatChildView.onCreatTagView(tags.get(i).toString());
-                addView(view);
+                addView(onCreatChildView.onCreatTagView(tags.get(i).toString()));
             }
 
             //增加tag 后面的...
-            View view = onCreatChildView.onCreatAppendView();
-            addView(view);
+            addView(onCreatChildView.onCreatAppendView());
 
             showItemCount = tags.size() + 1;
         }
@@ -88,9 +103,9 @@ public class SingleLineTagLayout extends ViewGroup {
 
     public void setTags(List<?> tags) {
         this.tags = tags;
-       if (onCreatChildView == null) {
-           return;
-       }
+        if (onCreatChildView == null) {
+            return;
+        }
         initView();
     }
 
@@ -121,18 +136,21 @@ public class SingleLineTagLayout extends ViewGroup {
         return new MarginLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
     }
 
-    @Override
-    protected LayoutParams generateLayoutParams(LayoutParams p) {
-        return new MarginLayoutParams(p);
-    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
+        if (widthMeasureSpec == 0 && heightMeasureSpec == 0) {
+            super.onMeasure(widthMeasureSpec,heightMeasureSpec);
+            return;
+        }
         int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         int heightMode = MeasureSpec.getMode(heightMeasureSpec);
         int sizeWidth = MeasureSpec.getSize(widthMeasureSpec);
         int sizeHeight = MeasureSpec.getSize(heightMeasureSpec);
 
+
+        isShowAppendView = false;
         // 计算出所有的childView的宽和高
         measureChildren(widthMeasureSpec, heightMeasureSpec);
         int cCount = getChildCount();
@@ -165,8 +183,6 @@ public class SingleLineTagLayout extends ViewGroup {
                 }
             }
 
-        } else {
-            isShowAppendView = false;
         }
 
 
@@ -222,7 +238,6 @@ public class SingleLineTagLayout extends ViewGroup {
 
         return cb - ct;
     }
-
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int cCount = getChildCount();
@@ -230,7 +245,6 @@ public class SingleLineTagLayout extends ViewGroup {
         int cHeight = 0;
         MarginLayoutParams lp;
         int measuredHeight = getMeasuredHeight();
-
         int startL = 0;
 
         //让其从左到右排列
@@ -270,10 +284,11 @@ public class SingleLineTagLayout extends ViewGroup {
 
     }
 
+
     public interface OnCreatChildView {
         View onCreatTagView (String str);
-        View onCreatAppendView ();
+        View onCreatAppendView();
     }
 
-
 }
+

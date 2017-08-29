@@ -7,30 +7,42 @@
     android:orientation="vertical"
     tools:context="com.qzsang.tagsdemo.MainActivity">
 
-    <LinearLayout
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="-----------SingleLineTagLayout---------------"
+        android:background="#ccc"/>
 
-        <com.qzsang.taglayoutlibrary.SingleLineTagLayout
-            android:id="@+id/sltl_tags"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:hint="我是没有任何标签时候的提示"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"/>
+    <com.qzsang.taglayoutlibrary.SingleLineTagLayout
+        android:id="@+id/sltl_tags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:SingleLineTagLayoutHint="还未选择任何标签哦，快去选择吧"
+        app:SingleLineTagLayoutPaddingLeft="12dp"
+        app:SingleLineTagLayoutColor="#999999"
+        app:SingleLineTagLayoutSize="14dp"
+        />
 
-   </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="-----------TagLayout---------------"
+        android:background="#ccc"/>
     <com.qzsang.taglayoutlibrary.TagLayout
         android:id="@+id/tl_tags"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-    <Button
-        android:id="@+id/btn_click"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="sedata"/>
+
 </LinearLayout>

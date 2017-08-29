@@ -37,9 +37,17 @@ public class TagLayout extends ViewGroup implements View.OnClickListener{
             int count = mOnCreatChildView.getCount();
             for (int i = 0; i < count; i++) {
                 View childView = mOnCreatChildView.onCreatTagView(i);
-                childView.setTag(i);
+
                 addView(childView);
-                childView.setOnClickListener(this);
+                View clickView = childView.findViewById(R.id.v_click);
+                if (clickView != null) {
+                    clickView.setTag(i);
+                    clickView.setOnClickListener(this);
+                } else {
+                    childView.setTag(i);
+                    childView.setOnClickListener(this);
+                }
+
             }
         }
 
@@ -163,8 +171,9 @@ public class TagLayout extends ViewGroup implements View.OnClickListener{
 
 
     public interface OnCreatChildView {
-        View onCreatTagView (int positon);
-        int getCount ();
-        void itemClick (int position);
+        View onCreatTagView(int positon);
+        int getCount();
+        void itemClick(int position);
     }
 }
+

@@ -1,8 +1,7 @@
 package com.qzsang.tagsdemo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,61 +19,76 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        iniSingleLineTagLayout();
+        initTagLayout();
+
+    }
+
+    public void iniSingleLineTagLayout () {
         sltl_tags = (SingleLineTagLayout) findViewById(R.id.sltl_tags);
-        tl_tags = (TagLayout) findViewById(R.id.tl_tags);
 
         sltl_tags.setOnCreatChildView(new SingleLineTagLayout.OnCreatChildView() {
 
-
             @Override
             public View onCreatTagView(String str) {
-               View view = View.inflate(MainActivity.this, R.layout.item_tag, null);
-                TextView textView = (TextView) view.findViewById(R.id.tv_tag);
-                textView.setText(str + "");
-                return view;
+                View childView = View.inflate(MainActivity.this, R.layout.item_single_user_tag, null);
+                TextView textView = (TextView) childView.findViewById(R.id.tv_tag_name);
+                textView.setText(str);
+                return childView;
             }
 
             @Override
             public View onCreatAppendView() {
-                View view = View.inflate(MainActivity.this, R.layout.item_tag, null);
-                TextView textView = (TextView) view.findViewById(R.id.tv_tag);
-                textView.setText("----");
-                return view;
+                View childView = View.inflate(MainActivity.this, R.layout.item_single_user_tag_append, null);
+                return childView;
             }
         });
 
+        List<String> list = new ArrayList<String>();
+        list.add("产品");
+        list.add("设计");
+        list.add("程序员");
+        list.add("销售");
+        list.add("大律师");
+        list.add("龙珠超");
+        list.add("火影忍者");
+        list.add("海贼王");
+        list.add("火影忍者博人传");
+        sltl_tags.setTags(list);
+    }
 
-        findViewById(R.id.btn_click).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    public void initTagLayout() {
+        tl_tags = (TagLayout) findViewById(R.id.tl_tags);
 
-                List<String> list = new ArrayList<String>();
-                list.add("sdfasdfasdf");
-                list.add("sdfasdfasdf");
-                list.add("sdfasdfasdf");
-                sltl_tags.setTags(list);
-            }
-        });
-
-
-        //-----------------------------------------
-
-       final List <String> list = new ArrayList<>();
-       for (int i = 1; i <= 100; i ++) {
-           list.add("我tag" + i);
-       }
+        final List <String> list = new ArrayList<>();
+        list.add("产品");
+        list.add("设计");
+        list.add("程序员");
+        list.add("销售");
+        list.add("大律师");
+        list.add("龙珠超");
+        list.add("火影忍者");
+        list.add("海贼王");
+        list.add("火影忍者博人传");
         tl_tags.setOnCreatChildView(new TagLayout.OnCreatChildView() {
             @Override
             public View onCreatTagView(int positon) {
-                View view = View.inflate(MainActivity.this, R.layout.item_tag, null);
-                TextView textView = (TextView) view.findViewById(R.id.tv_tag);
-                textView.setText(list.get(positon));
-                return view;
+                View childView = null;
+                if (positon == list.size()) {
+                    childView = View.inflate(MainActivity.this, R.layout.item_user_custom_tag_add, null);
+                } else {
+                    childView = View.inflate(MainActivity.this, R.layout.item_user_custom_tag, null);
+                    TextView textView = (TextView) childView.findViewById(R.id.tv_tag_name);
+                    textView.setText("" + list.get(positon));
+                }
+
+                return childView;
             }
 
             @Override
             public int getCount() {
-                return list.size();
+                return list.size() + 1;
             }
 
             @Override
@@ -83,6 +97,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         tl_tags.initView();
-
     }
 }

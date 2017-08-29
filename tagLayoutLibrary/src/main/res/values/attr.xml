@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+
     <declare-styleable name="SingleLineTagLayout">
-        <attr name="hint" format="string" />
+        <attr name="SingleLineTagLayoutHint" format="string" />
+        <attr name="SingleLineTagLayoutSize" format="dimension" />
+        <attr name="SingleLineTagLayoutColor" format="color" />
+        <attr name="SingleLineTagLayoutPaddingLeft" format="dimension" />
     </declare-styleable>
-
-
 </resources>

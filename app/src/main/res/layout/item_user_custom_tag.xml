@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_user_tag"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/tv_tag_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自定义标签"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textColor="#333333"
+            android:layout_marginLeft="15dp"
+            android:textSize="15sp"
+            />
+        <RelativeLayout
+            android:id="@+id/v_click"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            >
+            <ImageView
+                android:layout_width="8dp"
+                android:layout_height="8dp"
+                android:src="@drawable/icon_close_gray_30x30"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="15dp"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+</FrameLayout>
